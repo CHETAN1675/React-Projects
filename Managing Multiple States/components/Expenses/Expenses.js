@@ -17,24 +17,34 @@ function Expenses(props) {
     return expense.date.getFullYear().toString() === filteredYear
   });
 
-  return (
-    <Card className="expenses">
-       <ExpensesFilter
-        selected={filteredYear}
-        onChangeFilter={changeFilterHandler}
-      />
-      {filteredExpensesByYear.map((expense) => {
-        return (
+  let expensesContent = <p>No expenses found</p>;
+
+   if (filteredExpenses.length > 0) {
+    expensesContent = (
+      <>
+      {filteredExpenses.map((expense) => (
+
           <ExpenseItem
             key={expense.id}
             title={expense.title}
             date={expense.date}
             price={expense.price}
           />
-        );
-      })}
+           ))}
+       {filteredExpenses.length === 1 && (
+        <p>Only one expense found. Please add more</p>
+      )}
+      </>
+    );
+  }
+       return (
+    <Card className="expenses">
+      <ExpensesFilter
+        selected={filteredYear}
+        onChangeFilter={changeFilterHandler}
+      />
+      {expensesContent}
     </Card>
   );
-}
-
+};
 export default Expenses;
