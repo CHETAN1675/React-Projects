@@ -4,10 +4,13 @@ import "./Button.css";
 
 function Button(props) {
   return (
-    <div>
-      <button type={props.type}
-        className="button">{props.children}</button>
-    </div>
+    <button
+      className="button"
+      type={props.type || "button"}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
   );
 };
 
