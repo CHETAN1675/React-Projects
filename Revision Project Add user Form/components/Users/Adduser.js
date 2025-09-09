@@ -12,10 +12,10 @@ function AddUser() {
     if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) { 
     return;
   }
-  if (+enteredAge < 0) {
+  if (+enteredAge < 1) {
     return;
   }
-    console.log(enteredUsername, enteredAge );
+    props.onAddUse(enteredUsername, enteredAge );
     setEnteredUsername("");
     setEnteredAge("");
   };
