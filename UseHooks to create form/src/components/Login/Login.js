@@ -1,4 +1,4 @@
-import React, { useState,useReducer } from "react";
+import React, { useState,useEffect,useReducer } from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
@@ -32,22 +32,27 @@ const Login = (props) => {
     isValid: null,
   });
 
+   const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("Checking form validity...");
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500);
+
+    return () => {
+      console.log("CLEANUP");
+      clearTimeout(timer);
+    };
+  }, [emailIsValid, passwordIsValid]);
+
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", payload: event.target.value });
-
-    setFormIsValid(
-      event.target.value.includes("@") && passwordState.value.trim().length > 6
-    );
   };
-
-  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: "",
-    isValid: null,
-  });
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", payload: event.target.value });
-    setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   const validateEmailHandler = () => {
@@ -55,7 +60,7 @@ const Login = (props) => {
   };
 
   const validatePasswordHandler = () => {
-    dispatchPassword({type:"INPUT_BLUR"})
+    dispatchPassword({ type: "INPUT_BLUR" });
   };
 
   const submitHandler = (event) => {
@@ -103,6 +108,5 @@ const Login = (props) => {
     </Card>
   );
 };
-
 
 export default Login;
